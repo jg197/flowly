@@ -1316,6 +1316,8 @@ const catalog: Catalog = {
   "You have no open stories.": "열린 스토리가 없습니다.",
   "Add a Shortcut connection": "Shortcut 연결 추가",
   "Create one in Shortcut → Settings → API Tokens.": "Shortcut → 설정 → API Tokens에서 만드세요.",
+  "Leave empty to use {variable}": "{variable}\uc744(\ub97c) \uc0ac\uc6a9\ud558\ub824\uba74 \ube44\uc6cc \ub450\uc138\uc694",
+  "Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.": "\ub610\ub294 Paseo \ub370\ubaac \ud658\uacbd\uc5d0 {variable}\uc744(\ub97c) \uc124\uc815\ud558\uace0 \uc5ec\uae30\ub294 \ube44\uc6cc \ub450\uc138\uc694. \ud1a0\ud070\uc740 \uadf8 \uba38\uc2e0\uc5d0 \ub0a8\uc2b5\ub2c8\ub2e4.",
   "Start a card from a Jira ticket, Confluence page, GitHub/GitLab issue or pull request, Azure DevOps work item, or Shortcut story or epic, or add one with the Artifacts +. Agents read it every turn; Flowly never changes it.": "Jira 티켓, Confluence 페이지, GitHub/GitLab 이슈나 풀 리퀘스트, Azure DevOps 작업 항목, Shortcut 스토리나 에픽으로 카드를 만들거나 산출물의 +로 추가하세요. 에이전트는 매 턴 읽고, Flowly는 변경하지 않습니다.",
   "What's new": "새로운 기능",
   "Flowly {version}": "Flowly {version}",

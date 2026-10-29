@@ -62,7 +62,6 @@ describe.skipIf(!token || !slug || !storyId || !epicId)("Shortcut live workspace
     expect(Number(stories?.[1] || 0)).toBeGreaterThan(0);
   });
 
-
   test("a pasted link resolves to the same item", async () => {
     const { service } = await connect();
     const found = await service.recognize(`${base}/story/${storyId}`);

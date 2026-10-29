@@ -143,7 +143,7 @@ describe("read-only client", () => {
     expect(new Set(x.calls.map((c) => c.method))).toEqual(new Set(["GET"]));
     expect(x.calls.every((c) => /^\/rest\/api\/(2\/(myself|search|issue\/picker|issue\/[A-Z]+-\d+)|3\/search\/jql)$/.test(c.url.pathname))).toBe(true);
     const client = new JiraClient(
-      { id: "c", provider: "jira-dc", name: "", baseUrl: "https://jira.example.com", email: "", secret: "s", account: "", login: "", verifiedAt: "", authFailed: false },
+      { id: "c", provider: "jira-dc", name: "", baseUrl: "https://jira.example.com", email: "", secret: "s", account: "", login: "", verifiedAt: "", authFailed: false, secretFromEnv: false },
       x.fetchImpl,
     );
     const before = x.calls.length;

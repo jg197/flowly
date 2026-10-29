@@ -547,7 +547,7 @@ function ConnectionEditor({ family, connection, onClose }: { family: ConnectorFa
   const [tested, setTested] = useState<{ key: string; ok: boolean; text: string } | null>(null);
   const [testing, setTesting] = useState(false);
   const address = hosted ? defaultBase : baseUrl.trim();
-  const ready = !pending && !testing && !!address && (!!connection || (!!secret.trim() && (!info.email || !!email.trim())));
+  const ready = !pending && !testing && !!address && (!!connection || ((!!secret.trim() || !!info.secretEnv) && (!info.email || !!email.trim())));
   const values = { ...(connection ? { id: connection.id } : {}), provider, baseUrl: address, name, email, secret };
   const valuesKey = JSON.stringify([provider, address, email.trim(), secret.trim()]);
   const result = tested?.key === valuesKey ? tested : null;
@@ -624,9 +624,9 @@ function ConnectionEditor({ family, connection, onClose }: { family: ConnectorFa
         title={info.email ? t("API token") : t("Personal access token")}
         value={secret}
         onChange={setSecret}
-        placeholder={connection ? t("Unchanged") : ""}
+        placeholder={connection ? t("Unchanged") : info.secretEnv ? t("Leave empty to use {variable}", { variable: info.secretEnv }) : ""}
         secure
-        hint={tokenHint(provider, hosted)}
+        hint={info.secretEnv ? `${tokenHint(provider, hosted)} ${t("Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.", { variable: info.secretEnv })}` : tokenHint(provider, hosted)}
         onSubmit={ready ? () => void submit() : undefined}
       />
       {result && <Notice tone={result.ok ? "success" : "danger"}>{result.text}</Notice>}

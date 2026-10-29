@@ -5,6 +5,16 @@ import { fingerprintChanged } from "./fingerprint";
 const env = fixtures();
 afterEach(() => env.cleanup());
 
+/** Restores the real variable, which the live check and the daemon both rely on. */
+function withTokenEnv<T>(value: string, run: () => Promise<T>) {
+  const had = Object.prototype.hasOwnProperty.call(process.env, "SHORTCUT_API_TOKEN");
+  const before = process.env.SHORTCUT_API_TOKEN;
+  process.env.SHORTCUT_API_TOKEN = value;
+  return run().finally(() => {
+    if (had) process.env.SHORTCUT_API_TOKEN = before;
+    else delete process.env.SHORTCUT_API_TOKEN;
+  });
+}
 
 const base = "https://app.shortcut.com/acme";
 const api = "https://api.app.shortcut.com/api/v3";
@@ -171,7 +181,6 @@ describe("Shortcut (CONNECTORS-SPEC §14)", () => {
     expect(fingerprintChanged("output", edited.fingerprint, (await x.service.detail(ref, true)).fingerprint)).toBe(true);
   });
 
-
   test("an epic read lists its stories with their states", async () => {
     const x = await connected(
       [
@@ -201,7 +210,28 @@ describe("Shortcut (CONNECTORS-SPEC §14)", () => {
     }
   });
 
+  test("an empty token falls back to SHORTCUT_API_TOKEN on the daemon, and never leaves it", async () => {
+    const fake = shortcut([{ id: 1, name: "One" }]);
+    const service = await env.service(fake.fetchImpl);
+    await withTokenEnv("env-only-token", async () => {
+      const connection = await service.save({ provider: "shortcut", baseUrl: base, secret: "" });
+      expect(connection.secretFromEnv).toBe(true);
+      expect(fake.calls[0]!.headers["Shortcut-Token"]).toBe("env-only-token");
+      expect(JSON.stringify(await service.list())).not.toContain("env-only-token");
+    });
+  });
 
+  test("a typed token wins over the environment, and an empty one with no variable explains both ways", async () => {
+    const fake = shortcut([]);
+    const service = await env.service(fake.fetchImpl);
+    await withTokenEnv("env-only-token", async () => {
+      const connection = await service.save({ provider: "shortcut", baseUrl: base, secret: "typed-token" });
+      expect(connection.secretFromEnv).toBe(false);
+      expect(fake.calls[0]!.headers["Shortcut-Token"]).toBe("typed-token");
+    });
+    const bare = await env.service(shortcut([]).fetchImpl);
+    await withTokenEnv("", () => expect(bare.save({ provider: "shortcut", baseUrl: base, secret: "" })).rejects.toThrow(/SHORTCUT_API_TOKEN/));
+  });
 
   test("rate limiting reports how long to wait", async () => {
     // save() flattens every adapter error to its message, so the code is read on a later call.

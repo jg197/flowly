@@ -198,10 +198,21 @@ export class ConnectorService {
     const previous = input.id ? await this.connections.get(input.id) : undefined;
     // A stored token only goes back to the address and service it was entered for.
     const same = !!previous && previous.provider === input.provider && previous.baseUrl === baseUrl;
-    const secret = input.secret || (same ? previous.secret : "");
+    const typed = input.secret || (same ? previous.secret : "");
+    // Read on the daemon and never returned: publicConnection() strips the secret, so the
+    // client only ever learns that the environment supplied one.
+    const fromEnv = typed ? "" : (info.secretEnv && process.env[info.secretEnv]?.trim()) || "";
+    const secret = typed || fromEnv;
     const email = input.email || (same ? previous.email : "");
-    if (previous && !same && !input.secret) throw new Error("The address or type changed: enter the token again.");
-    if (!secret) throw new Error(info.email ? "Enter an API token." : "Enter a personal access token.");
+    if (previous && !same && !input.secret && !fromEnv) throw new Error("The address or type changed: enter the token again.");
+    if (!secret)
+      throw new Error(
+        info.secretEnv
+          ? `Enter an API token, or set ${info.secretEnv} in the Paseo daemon's environment and leave this empty.`
+          : info.email
+            ? "Enter an API token."
+            : "Enter a personal access token.",
+      );
     if (info.email && !email) throw new Error("Enter the email of the Atlassian account the API token belongs to.");
     const candidate: StoredConnection = {
       id: previous?.id || randomUUID(),
@@ -214,6 +225,7 @@ export class ConnectorService {
       login: "",
       verifiedAt: "",
       authFailed: false,
+      secretFromEnv: !!fromEnv,
     };
     const me = await adapter.verify(candidate, this.fetchImpl).catch((error) => {
       throw new Error(error instanceof ExternalError ? error.message : `Couldn't reach ${adapter.label}.`);

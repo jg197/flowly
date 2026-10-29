@@ -32,6 +32,12 @@ Confirmed:
 - an epic reads and lists its stories with their states
 - a pasted story link resolves to the same item as its `sc-<id>` key
 
+## Token from the daemon environment
+
+Confirmed in the app: Settings → Connections with an **empty** token field saved a
+working connection, so the Paseo daemon can supply `SHORTCUT_API_TOKEN`. The value is
+never returned to the client; the connection exposes only `secretFromEnv`.
+
 ## Not done
 
 Settings → Connections and the **From Shortcut** picker were not exercised by an

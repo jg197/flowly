@@ -31,6 +31,7 @@ export const storedConnection = z.object({
   login: z.string().default(""),
   verifiedAt: z.string(),
   authFailed: z.boolean(),
+  secretFromEnv: z.boolean().default(false),
 });
 export type StoredConnection = z.infer<typeof storedConnection>;
 

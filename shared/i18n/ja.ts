@@ -1316,6 +1316,8 @@ const catalog: Catalog = {
   "You have no open stories.": "自分の未完了ストーリーはありません。",
   "Add a Shortcut connection": "Shortcut 接続を追加",
   "Create one in Shortcut → Settings → API Tokens.": "Shortcut → 設定 → API Tokens で作成します。",
+  "Leave empty to use {variable}": "{variable} \u3092\u4f7f\u3046\u5834\u5408\u306f\u7a7a\u306e\u307e\u307e\u306b\u3057\u307e\u3059",
+  "Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.": "\u307e\u305f\u306f Paseo \u30c7\u30fc\u30e2\u30f3\u306e\u74b0\u5883\u306b {variable} \u3092\u8a2d\u5b9a\u3057\u3001\u3053\u3053\u306f\u7a7a\u306e\u307e\u307e\u306b\u3057\u307e\u3059\u3002\u30c8\u30fc\u30af\u30f3\u306f\u305d\u306e\u30de\u30b7\u30f3\u306b\u7559\u307e\u308a\u307e\u3059\u3002",
   "Start a card from a Jira ticket, Confluence page, GitHub/GitLab issue or pull request, Azure DevOps work item, or Shortcut story or epic, or add one with the Artifacts +. Agents read it every turn; Flowly never changes it.": "Jira チケット、Confluence ページ、GitHub/GitLab の issue やプルリクエスト、Azure DevOps の作業項目、Shortcut のストーリーやエピックからカードを作成するか、成果物の + で追加します。エージェントは毎ターン読み取り、Flowly は変更しません。",
   "What's new": "新機能",
   "Flowly {version}": "Flowly {version}",

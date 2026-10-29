@@ -21,7 +21,13 @@ export const itemTypeSchema = z.enum(itemTypes);
 /** What a provider needs to connect (CONNECTORS-SPEC §4.1). */
 export const providerInfo: Record<
   ConnectorProvider,
-  { family: ConnectorFamily; email: boolean; defaultBaseUrl?: string }
+  {
+    family: ConnectorFamily;
+    email: boolean;
+    defaultBaseUrl?: string;
+    /** Daemon environment variable to fall back on when no token is typed; the value never reaches the client. */
+    secretEnv?: string;
+  }
 > = {
   "jira-dc": { family: "jira", email: false },
   "jira-cloud": { family: "jira", email: true },
@@ -31,7 +37,7 @@ export const providerInfo: Record<
   gitlab: { family: "gitlab", email: false, defaultBaseUrl: "https://gitlab.com" },
   "azure-devops": { family: "azure", email: false },
   // One connection is one workspace, so baseUrl carries the slug and there is no default.
-  shortcut: { family: "shortcut", email: false },
+  shortcut: { family: "shortcut", email: false, secretEnv: "SHORTCUT_API_TOKEN" },
 };
 export const familyOf = (provider: ConnectorProvider) => providerInfo[provider].family;
 export const familyProviders = (family: ConnectorFamily) => connectorProviders.filter((p) => providerInfo[p].family === family);
@@ -50,6 +56,8 @@ export const connectionSchema = z.object({
   verifiedAt: z.string(),
   /** The last request was refused (401/403): the token needs replacing. */
   authFailed: z.boolean(),
+  /** The token came from the daemon's environment, not the form. Never the value itself. */
+  secretFromEnv: z.boolean().default(false),
 });
 export type Connection = z.infer<typeof connectionSchema>;
 

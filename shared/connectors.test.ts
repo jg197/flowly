@@ -214,7 +214,7 @@ describe("Azure DevOps keys and links", () => {
 });
 
 test("linkedCardCounts counts each card once per connection, by connection id or a URL the connection recognizes", () => {
-  const conn = (id: string, provider: "github" | "jira-dc", baseUrl: string) => ({ id, provider, name: id, baseUrl, account: "", verifiedAt: "", authFailed: false });
+  const conn = (id: string, provider: "github" | "jira-dc", baseUrl: string) => ({ id, provider, name: id, baseUrl, account: "", verifiedAt: "", authFailed: false, secretFromEnv: false });
   const gh = conn("gh", "github", "https://github.com"), jira = conn("jira", "jira-dc", "https://jira.example.com");
   const ext = { connectionId: "gh", provider: "github" } as const;
   expect(linkedCardCounts([gh, jira], [

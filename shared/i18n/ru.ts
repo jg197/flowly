@@ -1316,6 +1316,8 @@ const catalog: Catalog = {
   "You have no open stories.": "У вас нет открытых историй.",
   "Add a Shortcut connection": "Добавить подключение Shortcut",
   "Create one in Shortcut → Settings → API Tokens.": "Создайте его в Shortcut → Настройки → API Tokens.",
+  "Leave empty to use {variable}": "\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043f\u0443\u0441\u0442\u044b\u043c, \u0447\u0442\u043e\u0431\u044b \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u044c {variable}",
+  "Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.": "\u0418\u043b\u0438 \u0437\u0430\u0434\u0430\u0439\u0442\u0435 {variable} \u0432 \u043e\u043a\u0440\u0443\u0436\u0435\u043d\u0438\u0438 \u0434\u0435\u043c\u043e\u043d\u0430 Paseo \u0438 \u043e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u044d\u0442\u043e \u043f\u043e\u043b\u0435 \u043f\u0443\u0441\u0442\u044b\u043c; \u0442\u043e\u043a\u0435\u043d \u043e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u043d\u0430 \u0442\u043e\u0439 \u043c\u0430\u0448\u0438\u043d\u0435.",
   "Start a card from a Jira ticket, Confluence page, GitHub/GitLab issue or pull request, Azure DevOps work item, or Shortcut story or epic, or add one with the Artifacts +. Agents read it every turn; Flowly never changes it.": "Создайте карточку из тикета Jira, страницы Confluence, issue или pull request GitHub/GitLab рабочего элемента Azure DevOps либо истории или эпика Shortcut или добавьте элемент кнопкой + в Артефактах. Агенты читают его на каждом ходу; Flowly его не меняет.",
   "What's new": "Что нового",
   "Flowly {version}": "Flowly {version}",

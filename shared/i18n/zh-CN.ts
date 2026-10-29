@@ -1316,6 +1316,8 @@ const catalog: Catalog = {
   "You have no open stories.": "你没有未完成的故事。",
   "Add a Shortcut connection": "添加 Shortcut 连接",
   "Create one in Shortcut → Settings → API Tokens.": "在 Shortcut → 设置 → API Tokens 中创建。",
+  "Leave empty to use {variable}": "\u7559\u7a7a\u5219\u4f7f\u7528 {variable}",
+  "Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.": "\u6216\u5728 Paseo \u5b88\u62a4\u8fdb\u7a0b\u7684\u73af\u5883\u4e2d\u8bbe\u7f6e {variable} \u5e76\u5c06\u6b64\u5904\u7559\u7a7a\uff1b\u4ee4\u724c\u53ea\u7559\u5728\u90a3\u53f0\u673a\u5668\u4e0a\u3002",
   "Start a card from a Jira ticket, Confluence page, GitHub/GitLab issue or pull request, Azure DevOps work item, or Shortcut story or epic, or add one with the Artifacts +. Agents read it every turn; Flowly never changes it.": "从 Jira 工单、Confluence 页面、GitHub/GitLab 的 issue 或 PR、Azure DevOps 工作项、Shortcut 故事或史诗新建卡片，或用产物的 + 添加。Agent 每个回合都会读取，Flowly 不会修改它。",
   "What's new": "新功能",
   "Flowly {version}": "Flowly {version}",

@@ -1316,6 +1316,8 @@ const catalog: Catalog = {
   "You have no open stories.": "Você não tem histórias abertas.",
   "Add a Shortcut connection": "Adicionar uma conexão do Shortcut",
   "Create one in Shortcut → Settings → API Tokens.": "Crie um em Shortcut → Configurações → API Tokens.",
+  "Leave empty to use {variable}": "Deixe vazio para usar {variable}",
+  "Or set {variable} in the Paseo daemon's environment and leave this empty; the token stays on that machine.": "Ou defina {variable} no ambiente do daemon do Paseo e deixe isto vazio; o token fica naquela m\u00e1quina.",
   "Start a card from a Jira ticket, Confluence page, GitHub/GitLab issue or pull request, Azure DevOps work item, or Shortcut story or epic, or add one with the Artifacts +. Agents read it every turn; Flowly never changes it.": "Crie um cartão a partir de um ticket do Jira, uma página do Confluence, uma issue ou pull request do GitHub/GitLab um item de trabalho do Azure DevOps ou uma história ou épico do Shortcut, ou adicione-o com o + de Artefatos. Os agentes leem a cada turno; o Flowly nunca o altera.",
   "What's new": "Novidades",
   "Flowly {version}": "Flowly {version}",
