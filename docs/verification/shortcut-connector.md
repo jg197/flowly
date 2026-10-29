@@ -30,6 +30,7 @@ Confirmed:
 - a story reads with status, type, owners, labels, epic and branches, resolved through
   the `/workflows` and `/members` lookups
 - an epic reads and lists its stories with their states
+- a story's `container` is its epic key, and `read_external` follows that one hop
 - a pasted story link resolves to the same item as its `sc-<id>` key
 
 ## Token from the daemon environment

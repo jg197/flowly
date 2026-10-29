@@ -112,7 +112,8 @@ export function shortcutSummary(connection: Pick<StoredConnection, "id" | "baseU
     type: isEpic(itemType) ? "Epic" : titleCase((item as Story).story_type || "story"),
     priority: "",
     assignee: owners.join(", "),
-    container: "",
+    // A story's epic is its container, and unlike a repo path it is itself readable.
+    container: !isEpic(itemType) && (item as Story).epic_id ? shortcutKey("epic", String((item as Story).epic_id)) : "",
     updated: item.updated_at || "",
   };
 }

@@ -16,7 +16,7 @@ import { artifactRoots, dropArtifact, externalArtifact, missingArtifacts, normal
 import { ArtifactReadStore } from "./artifact-reads";
 import { ExternalError } from "./connectors/http";
 import { ExternalReadStore, refKey, type ConnectorService } from "./connectors/service";
-import { familyOf, itemTypeOf } from "../shared/connectors";
+import { familyOf, itemTypeOf, type ExternalRef, type ExternalSummary } from "../shared/connectors";
 import { join } from "node:path";
 import { hostname } from "node:os";
 import type { Artifact, GitHead, NextMove, Workpad } from "../shared/model";
@@ -170,6 +170,21 @@ export class AgentService {
     }
     return out;
   }
+  /**
+   * The epic a Shortcut story names in `container` (CONNECTORS-SPEC §14): one hop the data
+   * declares, not a key the agent chose, so the card's read scope still holds. A failure
+   * returns nothing rather than losing the story that was asked for.
+   */
+  private async storyEpic(ref: ExternalRef, summary: ExternalSummary, wanted: boolean) {
+    const key = summary.container;
+    if (!wanted || !this.connectors || summary.itemType !== "story" || !key) return undefined;
+    try {
+      const epic = await this.connectors.detail({ connectionId: ref.connectionId, itemType: "epic", key }, false);
+      return { epic: { key: epic.summary.key, url: epic.summary.url, status: epic.summary.status, markdown: epic.markdown, truncated: epic.truncated } };
+    } catch {
+      return undefined;
+    }
+  }
   /** flowly_read_external, alias flowly_read_ticket (CONNECTORS-SPEC §9): one of this card's external inputs, read-only. */
   async readExternal(identity: ToolIdentity, input: ReadExternalInput) {
     const r = await this.resources(identity);
@@ -200,6 +215,7 @@ export class AgentService {
         truncated: detail.truncated,
         stale: detail.stale,
         fetchedAt: detail.fetchedAt,
+        ...((await this.storyEpic(ref, detail.summary, input.epic ?? false)) ?? {}),
       };
     } catch (error) {
       if (error instanceof ExternalError)

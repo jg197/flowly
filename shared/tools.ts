@@ -327,6 +327,10 @@ export const artifactInputSchema = z.strictObject({
 export const readExternalInputSchema = z.strictObject({
   artifactId: z.string().min(1).describe("Id of an external input in get_task artifacts (one with an external field)."),
   refresh: z.boolean().default(false).describe("Bypass the 60-second cache."),
+  epic: z
+    .boolean()
+    .default(false)
+    .describe("Shortcut stories only: also read the epic this story belongs to, for the wider goal and its other stories."),
 });
 export const externalReadSchema = z.object({
   artifactId: z.string(),
@@ -339,6 +343,8 @@ export const externalReadSchema = z.object({
   /** The service could not be reached; this is the cached copy from fetchedAt. */
   stale: z.boolean(),
   fetchedAt: z.string(),
+  /** The story's epic, when `epic` was asked for and the story has one. */
+  epic: z.object({ key: z.string(), url: z.string(), status: z.string(), markdown: z.string(), truncated: z.boolean() }).optional(),
 });
 export type ReadExternalInput = z.input<typeof readExternalInputSchema>;
 const externalContextSchema = z.object({
