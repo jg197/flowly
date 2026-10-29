@@ -62,6 +62,15 @@ describe.skipIf(!token || !slug || !storyId || !epicId)("Shortcut live workspace
     expect(Number(stories?.[1] || 0)).toBeGreaterThan(0);
   });
 
+  test("a story carries its epic as the container, so read_external can follow it", async () => {
+    const { service, connection } = await connect();
+    const ref = { connectionId: connection.id, provider: "shortcut" as const, itemType: "story" as const, key: `sc-${storyId}`, remoteId: storyId };
+    const story = await service.detail(ref);
+    expect(story.summary.container).toBe(`epic-${epicId}`);
+    const epic = await service.detail({ connectionId: connection.id, itemType: "epic" as const, key: story.summary.container });
+    console.log(`sc-${storyId} -> ${epic.summary.key} [${epic.summary.status}]`);
+    expect(epic.markdown).toContain("## Stories (");
+  });
 
   test("a pasted link resolves to the same item", async () => {
     const { service } = await connect();

@@ -5,7 +5,6 @@ import { fingerprintChanged } from "./fingerprint";
 const env = fixtures();
 afterEach(() => env.cleanup());
 
-
 const base = "https://app.shortcut.com/acme";
 const api = "https://api.app.shortcut.com/api/v3";
 
@@ -171,6 +170,15 @@ describe("Shortcut (CONNECTORS-SPEC §14)", () => {
     expect(fingerprintChanged("output", edited.fingerprint, (await x.service.detail(ref, true)).fingerprint)).toBe(true);
   });
 
+  test("a story names its epic as the container, which is what lets read_external follow one hop", async () => {
+    const x = await connected([{ id: 1042, name: "Fix the retry backoff", epic: 2007 }], [{ id: 2007, name: "Delivery pipeline health" }]);
+    const ref = { connectionId: x.connection.id, provider: "shortcut" as const, itemType: "story" as const, key: "sc-1042", remoteId: "1042" };
+    expect((await x.service.detail(ref)).summary.container).toBe("epic-2007");
+    // A story with no epic offers no hop.
+    const y = await connected([{ id: 1, name: "Standalone" }]);
+    const bare = { connectionId: y.connection.id, provider: "shortcut" as const, itemType: "story" as const, key: "sc-1", remoteId: "1" };
+    expect((await y.service.detail(bare)).summary.container).toBe("");
+  });
 
   test("an epic read lists its stories with their states", async () => {
     const x = await connected(
@@ -200,8 +208,6 @@ describe("Shortcut (CONNECTORS-SPEC §14)", () => {
       expect(call.url.pathname).toMatch(allowed);
     }
   });
-
-
 
   test("rate limiting reports how long to wait", async () => {
     // save() flattens every adapter error to its message, so the code is read on a later call.

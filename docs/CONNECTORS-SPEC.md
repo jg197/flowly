@@ -322,6 +322,7 @@ GitLab issue 或 MR…     （有 GitLab 连接时）
 第六个 provider 族 `shortcut`（provider id `shortcut`），沿用本 spec 的全部规则：只读、外部状态不驱动卡片、默认 input、令牌只在 daemon。范围是 **story 与 epic**；Shortcut 的 document、iteration、objective、milestone 不做。目标是“从 Shortcut story 建卡，并让 agent 读到它所属的 epic”：New task 的 **From Shortcut** 与 Artifacts 的 + 菜单都会出现这个服务。
 
 - **连接**：Shortcut 只有云端，所以只有一个 provider，没有自建变体。一个连接 = 一个 workspace，`baseUrl` 为 `https://app.shortcut.com/<workspace-slug>`，与 Azure DevOps 的组织地址同理（§13）；**没有 `defaultBaseUrl`**，设置页要求填写地址。**API 根是另一个域名** `https://api.app.shortcut.com/api/v3`，由 adapter 以常量持有，`baseUrl` 不参与拼接。API token，请求头 `Shortcut-Token`，无邮箱字段。校验 `GET /api/v3/member`：账户显示 `名字 (@mention_name)`，login 取 `mention_name`，并把响应里的 `workspace2.url_slug` 与配置的 slug 比对——令牌属于别的 workspace 时，报错同时给出两个名字，而不是悄悄读错看板。
+- **从 story 跟到它的 epic**：`shortcutSummary` 把 story 的 epic key 写进 `container`（GitLab 用来放仓库路径的字段），于是 `flowly_read_external` 带 `epic=true` 时连 epic 一起返回。这是 §9“只能读本卡片的 external input”唯一让步的地方，而且只让一跳，并且这一跳**由数据本身声明**，不是 agent 自己挑的 key：卡片引用 story，story 写明 epic。令牌仍只在 daemon，读取仍是只读；epic 取不到时只返回 story，不让整次调用失败。
 - **条目类型**：`itemTypes` 增加 `story` 与 `epic`。agent 上下文里 story 写作 “Shortcut story”，epic 写作 “Shortcut epic”。
 - **key**：story 是 `sc-<id>`（Shortcut 自己的分支命名写法），epic 是 `epic-<id>`。两者都必须能被 `parseKey` 解析，因为 `ConnectorService.resolve` 会把链接产生的每个 key 再过一遍 `parseKey`。选择器里裸 `<id>` 读作 **story**，因为人手输的就是它；epic 通过链接、`epic-<id>` 或搜索进入。
 - **识别**：workspace 地址之下的 `(story|epic)/<id>`，带不带标题 slug、子路径或锚点都可以。slug 是 `baseUrl` 的一部分，所以别的 workspace 的链接不会匹配。document、iteration、objective 的链接不识别。
